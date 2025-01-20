@@ -14,6 +14,24 @@ const GRID_HEIGHT = canvas.height / ATOMIC_SIZE;
 // Initialize grid and renderer
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
 const renderer = new Renderer(ctx, ATOMIC_SIZE);
+
+// Handle particle types in toolbar
+const particleTypes = [
+    { pName: 'sand', type: 'sand'},
+    { pName: 'water', type: 'water'},
+    { pName: 'stone', type: 'stone'},
+];
+
+const toolbar = document.getElementById('toolbar');
+
+particleTypes.forEach(({ pName, type}) => {
+    const button = document.createElement('button');
+    button.textContent = pName;
+    button.onclick = () => setParticleType(type);
+    button.classList.add('particle-button'); // Add a CSS class to each button
+    toolbar.appendChild(button)
+})
+
 let selectedParticleType = 'sand'; // Default particle type
 
 // State for mouse interactions
@@ -43,7 +61,6 @@ function deployParticles() {
 
     const x = Math.floor(mouseX / ATOMIC_SIZE);
     const y = Math.floor(mouseY / ATOMIC_SIZE);
-    // console.log('x: ', x, 'y: ', y)
 
     if (selectedParticleType === 'sand') {
         grid.addParticle(new Sand(x, y));
