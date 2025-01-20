@@ -3,7 +3,7 @@ import { Particle } from './particle.js';
 // Example: Sand particle subclass
 export class Sand extends Particle {
     constructor(x, y) {
-        super(x, y, 'yellow', 'sand');
+        super(x, y, { r: 237, g: 201, b: 175, a: 255 }, 'sand');
     }
 
     update(grid) {

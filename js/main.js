@@ -5,7 +5,7 @@ import { Renderer } from "./renderer.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-export const ATOMIC_SIZE = 2;
+export const ATOMIC_SIZE = 1;
 
 // Grid size
 const GRID_WIDTH = canvas.width / ATOMIC_SIZE;
@@ -15,7 +15,6 @@ const GRID_HEIGHT = canvas.height / ATOMIC_SIZE;
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
 const renderer = new Renderer(ctx);
 
-console.log(grid)
 // Handle particle types in toolbar
 const particleTypes = [
     { pName: 'sand', type: 'sand'},
@@ -69,12 +68,11 @@ function deployParticles() {
         grid.addParticle(new Water(x, y));
     }
 
-    setTimeout(deployParticles, 5); // Repeat
+    setTimeout(deployParticles, 1); // Repeat
 }
 
 // Allow UI to set the selected particle type
 function setParticleType(type) {
-    console.log('activeParticles:', grid.activeParticles)
     selectedParticleType = type;
 }
 window.setParticleType = setParticleType; // Expose globally for HTML buttons

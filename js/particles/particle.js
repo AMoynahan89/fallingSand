@@ -4,9 +4,14 @@ export class Particle {
     constructor(x, y, color, type, size = ATOMIC_SIZE, density = 1, gravity = 1) {
         this.x = x;
         this.y = y;
-        this.size = size;
-        this.color = color;
+        this.color = {
+            r: color.r || 0,
+            g: color.g || 0,
+            b: color.b || 0,
+            a: color.a !== undefined ? color.a : 255,
+        };
         this.type = type;
+        this.size = size;
         this.density = density;
         this.gravity = gravity;
     }
@@ -29,7 +34,6 @@ export class Particle {
 
     // Helper method to move the particle
     move(grid, newX, newY) {
-        console.log(newX, newY)
         if (this.withinBounds(grid, newX, newY)) {
             const targetCell = grid.cells[newY][newX]
 
@@ -53,7 +57,6 @@ export class Particle {
                 this.y = newY;
 
                 // Move the target particle into the current particle's old position
-                console.log(targetCell)
                 targetCell.x = currentX;
                 targetCell.y = currentY;
                 grid.cells[currentY][currentX] = targetCell;
@@ -69,93 +72,3 @@ export class Particle {
         throw new Error('Update method must be implemented in subclass')
     }
 }
-// move(grid, newX, newY) {
-//     if (this.withinBounds(grid, newX, newY)) {
-//         const targetCell = grid.cells[newY][newX];
-
-//         // Case 1: Target cell is empty
-//         if (!targetCell) {
-//             grid.cells[newY][newX] = this;
-//             grid.cells[this.y][this.x] = null;
-//             this.x = newX;
-//             this.y = newY;
-//             return true;
-//         }
-
-//         // Case 2: Target cell has a particle with lower density
-//         if (targetCell.density < this.density) {
-//             // Swap particles
-//             const currentX = this.x;
-//             const currentY = this.y;
-
-//             grid.cells[newY][newX] = this; // Move this particle down
-//             this.x = newX;
-//             this.y = newY;
-
-//             targetCell.x = currentX; // Move the target particle up
-//             targetCell.y = currentY;
-//             grid.cells[currentY][currentX] = targetCell;
-
-//             return true;
-//         }
-
-//         // Case 3: Target cell has equal or higher density (stop movement)
-//         return false;
-//     }
-
-//     return false; // If out of bounds or no movement, return false
-// }
-
-
-
-
-
-// Optional: Maintain Batch Rendering
-// If you still want to use batch rendering for performance but need particles to have different colors, you can group particles by color and draw them in batches per color.
-
-// Example: Batch by Color
-// javascript
-// Copy
-// Edit
-// draw(grid) {
-//     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-//     const colorBatches = {};
-
-//     // Group particles by color
-//     for (const particle of grid.activeParticles) {
-//         if (!colorBatches[particle.color]) {
-//             colorBatches[particle.color] = [];
-//         }
-//         colorBatches[particle.color].push(particle);
-//     }
-
-//     // Draw each batch with the same color
-//     for (const [color, particles] of Object.entries(colorBatches)) {
-//         this.ctx.fillStyle = color; // Set the color for the batch
-//         this.ctx.beginPath(); // Start a new path for this color
-
-//         for (const particle of particles) {
-//             this.ctx.rect(
-//                 particle.x * this.cellSize,
-//                 particle.y * this.cellSize,
-//                 this.cellSize,
-//                 this.cellSize
-//             );
-//         }
-
-//         this.ctx.fill(); // Fill all particles of this color in one call
-//     }
-// }
-// How This Works:
-// Particles are grouped into "batches" based on their color.
-// Each color is drawn in a single batch for all particles of that color.
-// Performance Tradeoffs
-// Drawing Each Particle Separately:
-
-// Easier to implement and maintain.
-// Slightly less efficient due to more individual draw calls (fillRect() for every particle).
-// Batching by Color:
-
-// More efficient for rendering large numbers of particles.
-// Slightly more complex code but avoids redundant state changes for fillStyle.
