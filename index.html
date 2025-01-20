@@ -20,6 +20,11 @@
 </head>
 <body>
     <canvas id="canvas" width="800" height="600"></canvas>
-    <script src="main.js"></script>
+    <script type="module" src="/js/main.js"></script>
+    <div id="toolbar" style="position: absolute; top: 10px; left: 10px; display: flex; gap: 10px;">
+        <button onclick="setParticleType('sand')">Sand</button>
+        <button onclick="setParticleType('water')">Water</button>
+    </div>
+    
 </body>
 </html>
