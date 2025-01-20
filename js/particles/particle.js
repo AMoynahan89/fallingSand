@@ -1,11 +1,13 @@
-// Particle class
+import { ATOMIC_SIZE } from "../main.js";
+
 export class Particle {
-    constructor(x, y, size, color, type, gravity = 1) {
+    constructor(x, y, color, type, size = ATOMIC_SIZE, density = 1, gravity = 1) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.color = color;
         this.type = type;
+        this.density = density;
         this.gravity = gravity;
     }
 
@@ -19,14 +21,46 @@ export class Particle {
         return !grid.cells[y]?.[x];
     }
 
+    isMoreDense(grid, x, y) {
+        const targetCell = grid.cells[y]?.[x];
+        if (!targetCell) return false; // No target cell, so no density comparison
+        return targetCell.density < this.density;
+    }
+
     // Helper method to move the particle
     move(grid, newX, newY) {
-        if (this.withinBounds(grid, newX, newY) && this.cellIsEmpty(grid, newX, newY)) {
-            grid.cells[newY][newX] = this;
-            grid.cells[this.y][this.x] = null;
-            this.x = newX;
-            this.y = newY;
-            return true;
+        console.log(newX, newY)
+        if (this.withinBounds(grid, newX, newY)) {
+            const targetCell = grid.cells[newY][newX]
+
+            if (this.cellIsEmpty(grid, newX, newY)) {
+                grid.cells[newY][newX] = this;
+                grid.cells[this.y][this.x] = null;
+                this.x = newX;
+                this.y = newY;
+                return true;
+            }
+            
+            // Case 2: Target cell has a particle with lower density
+           else if (this.isMoreDense(grid, newX, newY)) {
+                // Swap particles
+                const currentX = this.x;
+                const currentY = this.y;
+
+                // Move the current particle into the target cell
+                grid.cells[newY][newX] = this;
+                this.x = newX;
+                this.y = newY;
+
+                // Move the target particle into the current particle's old position
+                console.log(targetCell)
+                targetCell.x = currentX;
+                targetCell.y = currentY;
+                grid.cells[currentY][currentX] = targetCell;
+
+                return true;
+            }
+            return false;
         }
         return false;
     }
@@ -35,9 +69,42 @@ export class Particle {
         throw new Error('Update method must be implemented in subclass')
     }
 }
+// move(grid, newX, newY) {
+//     if (this.withinBounds(grid, newX, newY)) {
+//         const targetCell = grid.cells[newY][newX];
 
+//         // Case 1: Target cell is empty
+//         if (!targetCell) {
+//             grid.cells[newY][newX] = this;
+//             grid.cells[this.y][this.x] = null;
+//             this.x = newX;
+//             this.y = newY;
+//             return true;
+//         }
 
+//         // Case 2: Target cell has a particle with lower density
+//         if (targetCell.density < this.density) {
+//             // Swap particles
+//             const currentX = this.x;
+//             const currentY = this.y;
 
+//             grid.cells[newY][newX] = this; // Move this particle down
+//             this.x = newX;
+//             this.y = newY;
+
+//             targetCell.x = currentX; // Move the target particle up
+//             targetCell.y = currentY;
+//             grid.cells[currentY][currentX] = targetCell;
+
+//             return true;
+//         }
+
+//         // Case 3: Target cell has equal or higher density (stop movement)
+//         return false;
+//     }
+
+//     return false; // If out of bounds or no movement, return false
+// }
 
 
 

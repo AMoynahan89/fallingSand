@@ -5,7 +5,7 @@ import { Renderer } from "./renderer.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const ATOMIC_SIZE = 2;
+export const ATOMIC_SIZE = 2;
 
 // Grid size
 const GRID_WIDTH = canvas.width / ATOMIC_SIZE;
@@ -13,8 +13,9 @@ const GRID_HEIGHT = canvas.height / ATOMIC_SIZE;
 
 // Initialize grid and renderer
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
-const renderer = new Renderer(ctx, ATOMIC_SIZE);
+const renderer = new Renderer(ctx);
 
+console.log(grid)
 // Handle particle types in toolbar
 const particleTypes = [
     { pName: 'sand', type: 'sand'},
@@ -81,7 +82,6 @@ window.setParticleType = setParticleType; // Expose globally for HTML buttons
 
 // Main game loop
 function gameLoop() {
-    console.log('selectcd type: ', selectedParticleType)
     grid.updateParticles(); // Update active particles
     renderer.draw(grid); // Draw particles
     requestAnimationFrame(gameLoop); // Loop

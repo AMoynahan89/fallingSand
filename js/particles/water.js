@@ -2,7 +2,7 @@ import { Particle } from './particle.js';
 
 export class Water extends Particle {
     constructor(x, y) {
-        super(x, y, 2, 'blue', 'water');
+        super(x, y, 'blue', 'water', 2, 0);
     }
 
     update(grid) {
