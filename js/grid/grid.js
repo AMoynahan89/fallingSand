@@ -18,10 +18,6 @@ export class Grid {
             const particle = this.activeParticles[i];
             particle.update(this);
 
-            // Clamp particle position to grid boundaries
-            particle.x = Math.max(0, Math.min(particle.x, this.width - 1));
-            particle.y = Math.max(0, Math.min(particle.y, this.height - 1));
-
             // Remove particles that are no longer active (e.g., hit the bottom)
             if (particle.y >= this.height - 1) {
                 this.activeParticles.splice(i, 1);

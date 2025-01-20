@@ -5,19 +5,15 @@ import { Renderer } from "./renderer.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const CELL_SIZE = 2;
+const ATOMIC_SIZE = 2;
 
 // Grid size
-const GRID_WIDTH = canvas.width / CELL_SIZE;
-const GRID_HEIGHT = canvas.height / CELL_SIZE;
-
-// Create a 2D grid filled with null (empty cells)
-// let grid = Array.from({ length: GRID_HEIGHT }, () => Array(GRID_WIDTH).fill(null));
-// let activeParticles = []; // Track particles that are active
+const GRID_WIDTH = canvas.width / ATOMIC_SIZE;
+const GRID_HEIGHT = canvas.height / ATOMIC_SIZE;
 
 // Initialize grid and renderer
 const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
-const renderer = new Renderer(ctx, CELL_SIZE);
+const renderer = new Renderer(ctx, ATOMIC_SIZE);
 let selectedParticleType = 'sand'; // Default particle type
 
 // State for mouse interactions
@@ -45,14 +41,9 @@ function updateMousePosition(event) {
 function deployParticles() {
     if (!mouseIsDown) return;
 
-    const x = Math.floor(mouseX / CELL_SIZE);
-    const y = Math.floor(mouseY / CELL_SIZE);
-    // // const inBounds = return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT && !grid[y][x]
-    // const inBounds = (x, y) => x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT && !grid[y][x];
-    // if (inBounds) {
-    //     const particle = new Particle(x, y, 'yellow');
-    //     grid[y][x] = particle;
-    // }
+    const x = Math.floor(mouseX / ATOMIC_SIZE);
+    const y = Math.floor(mouseY / ATOMIC_SIZE);
+    // console.log('x: ', x, 'y: ', y)
 
     if (selectedParticleType === 'sand') {
         grid.addParticle(new Sand(x, y));
@@ -63,24 +54,9 @@ function deployParticles() {
     setTimeout(deployParticles, 5); // Repeat
 }
 
-// // Update particles (only the active ones)
-// function updateParticles() {
-//     for (let i = activeParticles.length - 1; i >= 0; i--) {
-//         const particle = activeParticles[i];
-
-//         // Call the particle's update method
-//         particle.update(grid);
-
-//         // If the particle reaches the bottom, remove it from the active list
-//         if (particle.y >= GRID_HEIGHT - 1) {
-//             activeParticles.splice(i, 1); // Remove particle from active list
-//         }
-//     }
-// }
-
-
 // Allow UI to set the selected particle type
 function setParticleType(type) {
+    console.log('activeParticles:', grid.activeParticles)
     selectedParticleType = type;
 }
 window.setParticleType = setParticleType; // Expose globally for HTML buttons
@@ -88,6 +64,7 @@ window.setParticleType = setParticleType; // Expose globally for HTML buttons
 
 // Main game loop
 function gameLoop() {
+    console.log('selectcd type: ', selectedParticleType)
     grid.updateParticles(); // Update active particles
     renderer.draw(grid); // Draw particles
     requestAnimationFrame(gameLoop); // Loop

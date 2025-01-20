@@ -1,24 +1,13 @@
 import { Particle } from './particle.js';
 
-// Example: Water particle subclass
 export class Water extends Particle {
     constructor(x, y) {
-        super(x, y, 'blue', 'water');
+        super(x, y, 2, 'blue', 'water');
     }
 
     update(grid) {
-        // Water behavior: Flow down or sideways
-        const below = grid.cells[this.y + 1]?.[this.x];
-        if (!below) {
-            grid.cells[this.y + 1][this.x] = this;
-            grid.cells[this.y][this.x] = null;
-        } else if (!grid.cells[this.y + 1]?.[this.x - 1]) {
-            grid.cells[this.y + 1][this.x - 1] = this;
-            grid.cells[this.y][this.x] = null;
-        } else if (!grid.cells[this.y + 1]?.[this.x + 1]) {
-            grid.cells[this.y + 1][this.x + 1] = this;
-            grid.cells[this.y][this.x] = null;
-        }
-        this.y++;
+        if (this.move(grid, this.x, this.y + 1)) return; // Try moving down
+        if (this.move(grid, this.x - 1, this.y)) return; // Try moving left
+        if (this.move(grid, this.x + 1, this.y)) return; // Try moving right
     }
 }
