@@ -1,7 +1,9 @@
 import { Sand } from "./particles/sand.js";
 import { Water } from "./particles/water.js";
+import { Stone } from "./particles/stone.js";
 import { Grid } from "./grid/grid.js";
-import { Renderer } from "./renderer.js";  
+import { Renderer } from "./renderer.js";
+import { particleTypes } from "./particles/particle.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -16,12 +18,6 @@ const grid = new Grid(GRID_WIDTH, GRID_HEIGHT);
 const renderer = new Renderer(ctx);
 
 // Handle particle types in toolbar
-const particleTypes = [
-    { pName: 'sand', type: 'sand'},
-    { pName: 'water', type: 'water'},
-    { pName: 'stone', type: 'stone'},
-];
-
 const toolbar = document.getElementById('toolbar');
 
 particleTypes.forEach(({ pName, type}) => {
@@ -66,6 +62,8 @@ function deployParticles() {
         grid.addParticle(new Sand(x, y));
     } else if (selectedParticleType === 'water') {
         grid.addParticle(new Water(x, y));
+    } else if (selectedParticleType === 'stone') {
+        grid.addParticle(new Stone(x, y))
     }
 
     setTimeout(deployParticles, 1); // Repeat

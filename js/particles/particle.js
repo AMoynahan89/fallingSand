@@ -1,5 +1,11 @@
 import { ATOMIC_SIZE } from "../main.js";
 
+export const particleTypes = [
+    { pName: 'sand', type: 'sand'},
+    { pName: 'water', type: 'water'},
+    { pName: 'stone', type: 'stone'},
+];
+
 export class Particle {
     constructor(x, y, color, type, size = ATOMIC_SIZE, density = 1, gravity = 1) {
         this.x = x;
