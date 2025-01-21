@@ -7,7 +7,7 @@ import { particleTypes } from "./particles/particle.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-export const ATOMIC_SIZE = 1;
+export const ATOMIC_SIZE = 2;
 
 // Grid size
 const GRID_WIDTH = canvas.width / ATOMIC_SIZE;
@@ -24,7 +24,7 @@ particleTypes.forEach(({ pName, type}) => {
     const button = document.createElement('button');
     button.textContent = pName;
     button.onclick = () => setParticleType(type);
-    button.classList.add('particle-button'); // Add a CSS class to each button
+    button.classList.add('particle-button');
     toolbar.appendChild(button)
 })
 

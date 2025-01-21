@@ -78,3 +78,38 @@ export class Particle {
         throw new Error('Update method must be implemented in subclass')
     }
 }
+
+
+// move(grid, newX, newY) {
+//     const size = this.size;
+
+//     // Check if the particle's new size x size block is within bounds and empty
+//     for (let dy = 0; dy < size; dy++) {
+//         for (let dx = 0; dx < size; dx++) {
+//             const targetX = newX + dx;
+//             const targetY = newY + dy;
+
+//             if (!this.withinBounds(grid, targetX, targetY) || !this.cellIsEmpty(grid, targetX, targetY)) {
+//                 return false; // Blocked, can't move
+//             }
+//         }
+//     }
+
+//     // Clear current grid cells
+//     for (let dy = 0; dy < size; dy++) {
+//         for (let dx = 0; dx < size; dx++) {
+//             grid.cells[this.y + dy][this.x + dx] = null;
+//         }
+//     }
+
+//     // Move the particle
+//     for (let dy = 0; dy < size; dy++) {
+//         for (let dx = 0; dx < size; dx++) {
+//             grid.cells[newY + dy][newX + dx] = this;
+//         }
+//     }
+
+//     this.x = newX;
+//     this.y = newY;
+//     return true;
+// }

@@ -7,7 +7,9 @@ export class Water extends Particle {
 
     update(grid) {
         if (this.move(grid, this.x, this.y + 1)) return; // Try moving down
-        if (this.move(grid, this.x - 1, this.y)) return; // Try moving left
-        if (this.move(grid, this.x + 1, this.y)) return; // Try moving right
+        
+        const fallDir = Math.random() < 0.5 ? -1 : 1;
+        if (fallDir === -1 && this.move(grid, this.x - 1, this.y)) return; // Try moving left
+        if (fallDir === 1 && this.move(grid, this.x + 1, this.y)) return; // Try moving right
     }
 }
