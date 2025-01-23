@@ -39,38 +39,52 @@ export class Particle {
     }
 
     // Helper method to move the particle
+    // See if grid.cells could hold the size x size block of the particle
+    // which can then be used for grid manipulation
     move(grid, newX, newY) {
-        if (this.withinBounds(grid, newX, newY)) {
-            const targetCell = grid.cells[newY][newX]
+        const size = this.size;
 
-            if (this.cellIsEmpty(grid, newX, newY)) {
-                grid.cells[newY][newX] = this;
-                grid.cells[this.y][this.x] = null;
-                this.x = newX;
-                this.y = newY;
-                return true;
+        // Check if the particle's new size x size block is within bounds and empty
+        for (let dy = 0; dy < size; dy++) {
+            for (let dx = 0; dx < size; dx++) {
+                const targetX = newX + dx;
+                const targetY = newY + dy;
+
+        
+                if (this.withinBounds(grid, targetX, targetY)) {
+                    const targetCell = grid.cells[targetY][targetX]
+        
+                    if (this.cellIsEmpty(grid, targetX, targetY)) {
+                        grid.cells[targetY][targetX] = this;
+                        grid.cells[this.y][this.x] = null;
+                        this.x = targetX;
+                        this.y = targetY;
+                        return true;
+                    }
+                    
+                    // Case 2: Target cell has a particle with lower density
+                   else if (this.isMoreDense(grid, targetX, targetY)) {
+                        // Swap particles
+                        const currentX = this.x;
+                        const currentY = this.y;
+        
+                        // Move the current particle into the target cell
+                        grid.cells[targetY][targetX] = this;
+                        this.x = targetX;
+                        this.y = targetY;
+        
+                        // Move the target particle into the current particle's old position
+                        targetCell.x = currentX;
+                        targetCell.y = currentY;
+                        grid.cells[currentY][currentX] = targetCell;
+        
+                        return true;
+                    }
+                    return false;
+                }
             }
-            
-            // Case 2: Target cell has a particle with lower density
-           else if (this.isMoreDense(grid, newX, newY)) {
-                // Swap particles
-                const currentX = this.x;
-                const currentY = this.y;
-
-                // Move the current particle into the target cell
-                grid.cells[newY][newX] = this;
-                this.x = newX;
-                this.y = newY;
-
-                // Move the target particle into the current particle's old position
-                targetCell.x = currentX;
-                targetCell.y = currentY;
-                grid.cells[currentY][currentX] = targetCell;
-
-                return true;
-            }
-            return false;
         }
+
         return false;
     }
 
@@ -80,36 +94,44 @@ export class Particle {
 }
 
 
-// move(grid, newX, newY) {
-//     const size = this.size;
+    // // Helper method to move the particle
+    // // See if grid.cells could hold the size x size block of the particle
+    // // which can then be used for grid manipulation
+    // move(grid, newX, newY) {
+    //     const size = this.size;
 
-//     // Check if the particle's new size x size block is within bounds and empty
-//     for (let dy = 0; dy < size; dy++) {
-//         for (let dx = 0; dx < size; dx++) {
-//             const targetX = newX + dx;
-//             const targetY = newY + dy;
+    //     // Check if the particle's new size x size block is within bounds and empty
+    //     for (let dy = 0; dy < size; dy++) {
+    //         for (let dx = 0; dx < size; dx++) {
+    //             const targetX = newX + dx;
+    //             const targetY = newY + dy;
 
-//             if (!this.withinBounds(grid, targetX, targetY) || !this.cellIsEmpty(grid, targetX, targetY)) {
-//                 return false; // Blocked, can't move
-//             }
-//         }
-//     }
+        
+    //             if (!this.withinBounds(grid, targetX, targetY)) {
+    //                 console.warn(`Out of bounds: targetX=${targetX}, targetY=${targetY}`);
+    //                 return false; // Block movement if any part is out of bounds
+    //             }
+        
+    //             const targetCell = grid.cells[targetY]?.[targetX];
+    //             if (targetCell && !this.isMoreDense(grid, targetX, targetY)) {
+    //                 return false; // Block movement if the cell is occupied by a denser particle
+    //             }
+    //         }
+    //     }
 
-//     // Clear current grid cells
-//     for (let dy = 0; dy < size; dy++) {
-//         for (let dx = 0; dx < size; dx++) {
-//             grid.cells[this.y + dy][this.x + dx] = null;
-//         }
-//     }
+    //     for (let dy = 0; dy < size; dy++) {
+    //         for (let dx = 0; dx < size; dx++) {
+    //             grid.cells[this.y + dy][this.x + dx] = null;
+    //         }
+    //     }
 
-//     // Move the particle
-//     for (let dy = 0; dy < size; dy++) {
-//         for (let dx = 0; dx < size; dx++) {
-//             grid.cells[newY + dy][newX + dx] = this;
-//         }
-//     }
+    //     for (let dy = 0; dy < size; dy++) {
+    //         for (let dx = 0; dx < size; dx++) {
+    //             grid.cells[newY + dy][newX + dx] = this;
+    //         }
+    //     }
 
-//     this.x = newX;
-//     this.y = newY;
-//     return true;
-// }
+    //     this.x = newX;
+    //     this.y = newY;
+    //     return true;
+    // }

@@ -8,7 +8,6 @@ export class Sand extends Particle {
 
     update(grid) {
         if (this.move(grid, this.x, this.y + 1)) return; // Try moving down
-        // check density
         const fallDir = Math.random() < 0.5 ? -1 : 1;
         if (fallDir === -1 && this.move(grid, this.x - 1, this.y + 1)) return; // Try moving down-left
         if (fallDir === 1 && this.move(grid, this.x + 1, this.y + 1)) return; // Try moving down-right
