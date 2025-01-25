@@ -21,23 +21,7 @@ export class Particle {
         this.density = density;
         this.gravity = gravity;
     }
-
-    // Helper method for checking if a position is within grid boundaries
-    withinBounds(grid, x, y) {
-        return x >= 0 && x < grid.width && y >= 0 && y < grid.height;
-    }
-
-    // Helper method to check if a cell is empty
-    cellIsEmpty(grid, x, y) {
-        return !grid.cells[y]?.[x];
-    }
-
-    isMoreDense(grid, x, y) {
-        const targetCell = grid.cells[y]?.[x];
-        if (!targetCell) return false; // No target cell, so no density comparison
-        return targetCell.density < this.density;
-    }
-
+    
     // Helper method to move the particle
     // See if grid.cells could hold the size x size block of the particle
     // which can then be used for grid manipulation
@@ -84,15 +68,36 @@ export class Particle {
                 }
             }
         }
-
         return false;
     }
-
+    
     update(grid) {
+        if (this.move(grid, this.x, this.y + 1)) return; // Try moving down
+
+        this.specialBehavior(grid);
+    }
+    
+    
+    specialBehavior(grid) {        
         throw new Error('Update method must be implemented in subclass')
     }
-}
 
+    // Helper method for checking if a position is within grid boundaries
+    withinBounds(grid, x, y) {
+        return x >= 0 && x < grid.width && y >= 0 && y < grid.height;
+    }
+    
+    // Helper method to check if a cell is empty
+    cellIsEmpty(grid, x, y) {
+        return !grid.cells[y]?.[x];
+    }
+
+    isMoreDense(grid, x, y) {
+        const targetCell = grid.cells[y]?.[x];
+        if (!targetCell) return false; // No target cell, so no density comparison
+        return targetCell.density < this.density;
+    }
+}
 
     // // Helper method to move the particle
     // // See if grid.cells could hold the size x size block of the particle
