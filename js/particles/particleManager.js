@@ -6,10 +6,7 @@ export class ParticleManager {
         this.activeParticles = []; // List of currently active (moving) particles
         this.inactiveParticles = []; // List of inactive (stationary) particles
         // Initialize a 2D grid (spatial partitioning)
-        this.spatialGrid = Array.from(
-            { length: Math.ceil(CANVAS_HEIGHT / ATOMIC_SIZE) },
-            () => Array.from({ length: Math.ceil(CANVAS_WIDTH / ATOMIC_SIZE) }, () => [])
-        );
+        this.grid = Array.from({ length: CANVAS_HEIGHT / ATOMIC_SIZE }, () => Array(CANVAS_WIDTH / ATOMIC_SIZE).fill(null));
     }
     
     // Add a particle to the simulation
@@ -20,9 +17,11 @@ export class ParticleManager {
     // Update all active particles
     updateParticles() {
         for (const particle of this.activeParticles) {
-            console.log(particle);
             particle.applyForce(0, 0.1); // Apply gravity (0.1 force downward)
             particle.update(); // Update particle position
+            console.log('grid', this.grid);
+            console.log('particle', particle);
+            this.grid[Math.floor(particle.y)][Math.floor(particle.x)] = particle; // Update the grid
         }
     }
 

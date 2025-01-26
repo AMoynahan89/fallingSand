@@ -9,7 +9,7 @@ export class Sand extends Particle {
     }
 
     update() {
-        if (!this.isActive) return; // Skip update for inactive particles
+        // if (!this.isActive) return; // Skip update for inactive particles
 
         this.x += this.vx;
         this.y += this.vy;
@@ -20,11 +20,11 @@ export class Sand extends Particle {
 
         // Boundary checks to keep the particle within the canvas
         if (this.x < 0 || this.x >= CANVAS_WIDTH / ATOMIC_SIZE - 1) {
-            // this.vx *= -0.5; // Reverse horizontal velocity if hitting left/right boundary
-            // this.x = Math.floor(this.x); // Snap to grid
+            this.vx *= -0.5; // Reverse horizontal velocity if hitting left/right boundary
+            this.x = Math.floor(this.x); // Snap to grid
         }
         if (this.y < 0 || this.y >= CANVAS_HEIGHT / ATOMIC_SIZE - 1) {
-            // this.vy *= -0.5; // Reverse vertical velocity if hitting top/bottom boundary
+            this.vy *= -0.5; // Reverse vertical velocity if hitting top/bottom boundary
             this.y = Math.floor(this.y); // Snap to grid
             this.vx = 0; // Stop horizontal motion  
             this.vy = 0; // Stop vertical motion
