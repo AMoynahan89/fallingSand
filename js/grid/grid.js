@@ -4,6 +4,7 @@ export class Grid {
         this.height = height;
         this.cells = Array.from({ length: height }, () => Array(width).fill(null));
         this.activeParticles = [];
+        this.inactiveParticles = [];
     }
 
     addParticle(particle) {
@@ -18,10 +19,11 @@ export class Grid {
             const particle = this.activeParticles[i];
             particle.update(this);
 
-            // Remove particles that are no longer active (e.g., hit the bottom)
-            if (particle.y >= this.height - 1) {
-                this.activeParticles.splice(i, 1);
-            }
+            // Remove particles that are no longer active (e.g., stopped moving)
+            // if (!particle.isActive) {
+            //     this.activeParticles.splice(i, 1);
+            //     this.inactiveParticles.push(particle);
+            // }
         }
     }
 }

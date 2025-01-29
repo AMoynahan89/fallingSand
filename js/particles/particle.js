@@ -10,6 +10,8 @@ export class Particle {
     constructor(x, y, color, type, size = ATOMIC_SIZE, density = 1, gravity = 1) {
         this.x = x;
         this.y = y;
+        this.vx = 0;
+        this.vy = 0;
         this.color = {
             r: color.r || 0,
             g: color.g || 0,
@@ -20,6 +22,7 @@ export class Particle {
         this.size = size;
         this.density = density;
         this.gravity = gravity;
+        this.isActive = true;
     }
 
     // Helper method for checking if a position is within grid boundaries
@@ -37,6 +40,30 @@ export class Particle {
         if (!targetCell) return false; // No target cell, so no density comparison
         return targetCell.density < this.density;
     }
+
+    // neihboorsInactive(grid) {
+    //     const x = this.x;
+    //     const y = this.y;
+    //     const neihboors = [
+    //         { x: x, y: y - 1 },
+    //         { x: x, y: y + 1 },
+    //         { x: x - 1, y: y },
+    //         { x: x + 1, y: y },
+    //         { x: x - 1, y: y - 1 },
+    //         { x: x + 1, y: y - 1 },
+    //         { x: x - 1, y: y + 1 },
+    //         { x: x + 1, y: y + 1 },
+    //     ];  
+    //     for (const neihboor of neihboors) {
+    //         if (this.withinBounds(grid, neihboor.x, neihboor.y)) {
+    //             const targetCell = grid.cells[neihboor.y][neihboor.x];
+    //             if (targetCell && targetCell.isActive) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     return true;
+    // }
 
     // Helper method to move the particle
     // See if grid.cells could hold the size x size block of the particle
@@ -80,11 +107,17 @@ export class Particle {
         
                         return true;
                     }
+
+                    // if (this.neihboorsInactive(grid)) {
+                    //     this.isActive = false;
+                    // }
                     return false;
                 }
             }
         }
-
+        // if (this.neihboorsInactive(grid)) {
+        //     this.isActive = false;
+        // }
         return false;
     }
 
