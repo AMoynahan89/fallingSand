@@ -1,0 +1,30 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000;
+}
+
+canvas {
+    border: 1px solid white;
+}
+
+#toolbar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.particle-button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.particle-button:hover {
+    background-color: lightgray;
+}
