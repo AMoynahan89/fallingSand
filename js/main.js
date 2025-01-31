@@ -8,7 +8,7 @@ const imgData = ctx.createImageData(WIDTH, HEIGHT);
 for (let i = 0; i < imgData.data.length; i += 4) {
     imgData.data[i + 0] = 0; // R value
     imgData.data[i + 1] = 0; // G value
-    imgData.data[i + 2] = 0; // B value
+    imgData.data[i + 2] = 255; // B value
     imgData.data[i + 3] = 255; // A value
 }
 
