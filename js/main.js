@@ -13,3 +13,11 @@ for (let i = 0; i < imgData.data.length; i += 4) {
 }
 
 ctx.putImageData(imgData, 0, 0);
+
+
+function gameLoop() {
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
