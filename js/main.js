@@ -5,15 +5,6 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const imgData = ctx.createImageData(WIDTH, HEIGHT);
 
-for (let i = 0; i < imgData.data.length; i += 4) {
-    imgData.data[i + 0] = 0; // R value
-    imgData.data[i + 1] = 0; // G value
-    imgData.data[i + 2] = 0; // B value
-    imgData.data[i + 3] = 255; // A value
-}
-
-ctx.putImageData(imgData, 0, 0);
-
 // State for mouse interactions
 let mouseX = 0;
 let mouseY = 0;
@@ -22,7 +13,7 @@ let mouseIsDown = false;
 // Mouse events
 canvas.addEventListener('mousedown', (event) => {
     mouseIsDown = true;
-    drawPixel(event);
+    drawParticle(event);
 });
 canvas.addEventListener('mouseup', () => { mouseIsDown = false });
 canvas.addEventListener('mousemove', updateMousePosition);
@@ -33,19 +24,22 @@ function updateMousePosition(event) {
     mouseY = Math.floor(event.clientY - rect.top);
 }
 
-function drawPixel(event) {
+let count = 0;
+function drawParticle(event) {
     if (!mouseIsDown) return;
+    count++;
     const index = (mouseY * WIDTH + mouseX) * 4; // 4 values per pixel
     imgData.data[index + 0] = 255; // R value
     imgData.data[index + 1] = 255; // G value
     imgData.data[index + 2] = 255; // B value
     imgData.data[index + 3] = 255; // A value
     ctx.putImageData(imgData, 0, 0);
+    setTimeout(drawParticle, 1); // Repeat
 }
 
 
 function gameLoop() {
-    drawPixel();
+    drawParticle();
     requestAnimationFrame(gameLoop);
 }
 
