@@ -1,6 +1,7 @@
 const HEIGHT = 600;
 const WIDTH = 800;
-const grid = new Array(HEIGHT), new Array()
+const grid = Array.from({ length: HEIGHT }, () => Array(WIDTH).fill(null));
+let activeParticles = [];
 
 
 const canvas = document.getElementById('canvas');   
@@ -26,10 +27,10 @@ function updateMousePosition(event) {
     mouseY = Math.floor(event.clientY - rect.top);
 }
 
-let count = 0;
 function drawParticle(event) {
     if (!mouseIsDown) return;
-    count++;
+    // new Particle(type, x, y)
+    // push to activeParticles
     const index = (mouseY * WIDTH + mouseX) * 4; // 4 values per pixel
     imgData.data[index + 0] = 255; // R value
     imgData.data[index + 1] = 255; // G value
@@ -39,10 +40,15 @@ function drawParticle(event) {
     setTimeout(drawParticle, 1); // Repeat
 }
 
+function updateGrid() {
+    for (let i = 0; i > activeParticles.length; i++) {
+
+    }
+}
 
 function gameLoop() {
     drawParticle();
-
+    updateGrid();
     requestAnimationFrame(gameLoop);
 }
 
